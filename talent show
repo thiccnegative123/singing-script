@@ -1,0 +1,61 @@
+local player = game.Players.LocalPlayer
+local targetPosition = Vector3.new(86.072998, 100.031593, -491.421265)
+local targetOrientation = CFrame.new(86.072998, 100.031593, -491.421265, 
+    0.803467512, -0.15452981, -0.57494396, 
+    0, 0.965726495, -0.259561867, 
+    0.595348656, 0.208549529, 0.775929809
+)
+
+local duration = 3
+local teleportInterval = 0.5
+local startTime
+
+-- Function to start teleporting when the player is alive
+local function startTeleporting(character)
+    startTime = tick()
+
+    while tick() - startTime < duration do
+        -- Teleport the player to the target position with the given orientation
+        character:SetPrimaryPartCFrame(targetOrientation)
+        wait(teleportInterval)
+    end
+end
+
+
+player.CharacterAdded:Connect(function(character)
+   
+    local humanoid = character:WaitForChild("Humanoid")
+    
+ 
+    startTeleporting(character)
+
+   
+    humanoid.Died:Connect(function()
+     
+        player.CharacterAdded:Wait()
+        startTeleporting(player.Character)  
+    end)
+end)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local startTime = tick()
+local duration = 3  
+local teleportInterval = 0.5 
+
+local targetPosition = Vector3.new(86.072998, 100.031593, -491.421265)
+local targetOrientation = CFrame.new(86.072998, 100.031593, -491.421265, 
+    0.803467512, -0.15452981, -0.57494396, 
+    0, 0.965726495, -0.259561867, 
+    0.595348656, 0.208549529, 0.775929809
+)
+
+while tick() - startTime < duration do
+    
+    character:SetPrimaryPartCFrame(targetOrientation)
+    
+    
+    wait(teleportInterval)
+end
+
+print("Teleportation ended.")
